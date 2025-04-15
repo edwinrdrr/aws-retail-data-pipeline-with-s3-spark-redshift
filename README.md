@@ -1,4 +1,4 @@
-# AWS Retail Data Pipeline (End-to-End)
+# Enterprise Retail Analytics Pipeline (SCD2 + Dimensional Modeling)
 
 This project implements a data pipeline for retail data processing, from raw data generation to analytics-ready data in Redshift.
 
