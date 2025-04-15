@@ -8,21 +8,22 @@ This project implements a data pipeline for retail data processing, from raw dat
 /project-root/
 │
 ├── /scripts/
-│   ├── /data_generation/            # Contains data generation scripts (formerly faker_scripts)
-│   │   └── faker_script_retail_data.py
-│   │
-│   ├── /spark/                       # Spark processing scripts
-│   │   ├── bronze_to_silver/
-│   │   ├── silver_to_gold/
-│   │
-│   └── /redshift/                    # Redshift SQL scripts
-│       ├── schema_setup/
-│       ├── data_loading/
-│       └── analytics/
+│ ├── /data_generation/ # Data generation scripts using Faker
+│ │ └── faker_script_retail_data.py
+│ │
+│ ├── /spark/ # Spark processing scripts (run on Databricks)
+│ │ ├── bronze_to_silver/ # Bronze to Silver transformations
+│ │ └── silver_to_gold/ # Silver to Gold transformations
+│ │
+│ └── /redshift/ # Redshift SQL scripts
+│ ├── schema_setup/ # Schema initialization
+│ ├── data_loading/ # Data loading procedures
+│ └── analytics/ # Analytical queries
 │
-│
-├── README.md                         # Main project documentation
-└── .gitignore
+├── README.md # Project documentation
+└── .gitignore # Git ignore rules
+
+
 
 ## Pipeline Architecture
 
