@@ -2,28 +2,21 @@
 
 This project implements a data pipeline for retail data processing, from raw data generation to analytics-ready data in Redshift.
 
-
 ## Project Structure
-
-/project-root/
-│
-├── /scripts/
-│ ├── /data_generation/ # Data generation scripts using Faker
-│ │ └── faker_script_retail_data.py
-│ │
-│ ├── /spark/ # Spark processing scripts (run on Databricks)
-│ │ ├── bronze_to_silver/ # Bronze to Silver transformations
-│ │ └── silver_to_gold/ # Silver to Gold transformations
-│ │
-│ └── /redshift/ # Redshift SQL scripts
-│ ├── schema_setup/ # Schema initialization
-│ ├── data_loading/ # Data loading procedures
-│ └── analytics/ # Analytical queries
-│
-├── README.md # Project documentation
-└── .gitignore # Git ignore rules
-
-
+```
+├── scripts/
+│   ├── data_generation/       # Scripts to generate sample data
+│   ├── spark/                 # Spark transformation scripts
+│   │   ├── bronze_to_silver/  # ETL from Bronze to Silver layer
+│   │   └── silver_to_gold/    # ETL from Silver to Gold layer
+│   └── redshift/
+|       ├── data_loading/
+│       ├── database_setup/
+|       ├── schema_setup/
+│       └── tables_setup/
+├── .gitignore
+└── README.md                
+```
 
 ## Pipeline Architecture
 
@@ -39,36 +32,53 @@ In this project, I use Databricks to run the Spark jobs.
 - Spark environment (Databricks/EMR Serverless)
 - Redshift Serverless access
 
-
 ### 1. Generating Sample Data
-
-```bash
-python scripts/data_generation/faker_script_retail_data.py --output ./data/raw/
-```
+Run the data generation script in `scripts/data_generation/faker_script_retail_data.py`
 
 ### 2. Bronze to Silver Processing
-
-fsdfs
+Run the following Databricks notebooks in the `scripts/spark/bronze_to_silver/` directory:
+- `bronze_to_silver_customers.py`
+- `bronze_to_silver_products.py`
+- `bronze_to_silver_orders.py`
+- `bronze_to_silver_order_items.py`
 
 ### 3. Silver to Gold Processing
+Run the following Databricks notebooks in the `scripts/spark/silver_to_gold/` directory:
+- `silver_to_gold_dim_customer.py`
+- `silver_to_gold_dim_product.py`
+- `silver_to_gold_dim_date.py`
+- `silver_to_gold_fact_sales.py`
 
-Databricks Note: If you use databricks, you may need to manually delete committed files in the target layer between runs. So that the files can be loaded to the Redshift Serverless.
+Note: If using Databricks, you may need to manually delete committed files in the target layer between runs so that the files can be loaded to Redshift Serverless.
 
 ### 4. Data Warehousing in Redshift Serverless
-#### 4.0. Prerequisite: Provision Infrastructure
-##### 4.0.1. Create namespace (data warehouse instance)
+
+#### 4.1. Provision Infrastructure
+Create a Redshift Serverless namespace and workgroup using AWS CLI or console.
+
+#### 4.2. Setup Database and Schema
+Run the database setup script in `scripts/redshift/database_setup/database_setup.sql`
+
+#### 4.3. Create Tables
+Run the table creation scripts in the `scripts/redshift/tables_setup/` directory:
+- `table_setup_gold_dim_customer.sql`
+- `table_setup_gold_dim_product.sql`
+- `table_setup_gold_dim_date.sql`
+- `table_setup_gold_fact_sales.sql`
+
+#### 4.4. Load Data
+Use Redshift COPY commands to load data from S3 Gold Layer to the tables created in the previous step.
+
+## Data Model
+
+### Dimension Tables
+- **dim_customer**: SCD Type 2 customer dimension with historical tracking
+- **dim_product**: SCD Type 2 product dimension with historical tracking
+- **dim_date**: Date dimension with calendar attributes
+### Fact Table
+- **fact_sales**: Sales transactions with foreign keys to dimensions
 
 
-##### 4.0.2. Create workgroup (compute resources)
-
-
-#### 4.1. Database Setup
-
-#### 4.2. Schema Setup
-
-#### 4.3. Tables Setup
-
-#### 4.4. Data Loading
 
 
 
