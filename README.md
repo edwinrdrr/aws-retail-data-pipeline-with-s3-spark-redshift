@@ -57,7 +57,7 @@ Note: If using Databricks, you may need to manually delete committed files in th
 Create a Redshift Serverless namespace and workgroup using AWS CLI or console.
 
 #### 4.2. Setup Database and Schema
-Run the database setup script in `scripts/redshift/database_setup/database_setup.sql`
+Run the database setup script in `scripts/redshift/database_setup/` and `scripts/redshift/schema_setup/` 
 
 #### 4.3. Create Tables
 Run the table creation scripts in the `scripts/redshift/tables_setup/` directory:
@@ -69,7 +69,13 @@ Run the table creation scripts in the `scripts/redshift/tables_setup/` directory
 #### 4.4. Load Data
 Use Redshift COPY commands to load data from S3 Gold Layer to the tables created in the previous step.
 
-## Data Model
+Run the load data scripts in the `scripts/redshift/data_loading/` directory:
+- `gold_data_loading_dim_customer.sql`
+- `gold_data_loading_dim_product.sql`
+- `gold_data_loading_dim_date.sql`
+- `gold_data_loading_fact_sales.sql`
+
+## Data Model (Star Schema)
 
 ### Dimension Tables
 - **dim_customer**: SCD Type 2 customer dimension with historical tracking
